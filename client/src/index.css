@@ -3,7 +3,7 @@
     background-color: rgb(231, 231, 231);
 }
 
-
+/* Estilização das mensagens de erro */
 .error{
     color: red;
     font-size: 20px;
