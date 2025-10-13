@@ -47,6 +47,10 @@
     ],
 
     "categorias":[
+        {
+            "id": 1,
+            "nome": "Sáude e Beleza"
+        }
 
     ],
 
