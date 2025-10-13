@@ -1,0 +1,57 @@
+{
+    "usuarios":[
+        {
+            "id": 1, 
+            "nome": "Gregory",
+            "email": "gregory@gmail.com",
+            "senha": "5",
+            "tipo": "Administrador",
+            "imagemUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThPRpw6ZxXB2lpJQtUF0jsC5aT09bQw8QTiQ&s"
+        },
+        {
+            "id": 2, 
+            "nome": "Neymar",
+            "email": "Ney@gmail.com",
+            "senha": "10",
+            "tipo": "Gerente",
+            "imagemUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPpmkbH0BAkbs5cvtO1GQVnoBKKIWmMEc13A&s"
+        },
+        {
+            "id": 3, 
+            "nome": "sla",
+            "email": "sla@gmail.com",
+            "senha": "1",
+            "tipo": "Funcionario",
+            "imagemUrl": null
+        }
+        
+
+    ],
+    "produtos":[
+        {
+            "id": 1,
+            "SKU": "012345789",
+            "nome": "Shampoo CR7",
+            "decricao": "Anticaspa, shampoo dos vencedores",
+            "categoria": "Saúde e Beleza",
+            "marca": "Clear men",
+            "medida": "mL",
+            "tamanho": 400,
+            "precoCusto": 0,
+            "precoVenda": 0,
+            "quantidade": 7,
+            "fornecedor": "Ambev",
+            "imagemUrl": "https://drogariaspacheco.vteximg.com.br/arquivos/ids/1289796-1000-1000/388467---shampoo-clear-men-limpeza-profunda-masculino-400ml_0006_7891150019416_1.png?v=638518246759000000"
+        }
+
+    ],
+
+    "categorias":[
+
+    ],
+
+    "clientes":[
+
+    ]
+
+}
