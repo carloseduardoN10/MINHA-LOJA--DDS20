@@ -55,6 +55,22 @@
     ],
 
     "clientes":[
+        {
+            "id": 1,
+            "nome": "Maria das Graças",
+            "documento": "12345678910",
+            "tipo": "PF",
+            "telefone": "27970707070",
+            "dataNascimento": "2007-07-07",
+            "endereco": {
+                "cep": "23456123",
+                "logadouro": "Rua dos bobos",
+                "complemento": "número 1",
+                "cidade": "Ilha da magia",
+                "uf": "SP"
+            },
+            "status": "Ativo"
+        }
 
     ]
 
