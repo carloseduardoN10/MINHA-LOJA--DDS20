@@ -10,15 +10,17 @@ import Alert from "react-bootstrap/Alert"
 // Importaçãp do icone de login
 import { BsBoxArrowInRight } from "react-icons/bs";
 
-// importando o hook para verificar o login, vindo do useUsuarios
+// Importando o hook para verificar o login, vindo do useUsuarios
 import { useVerificaLogin } from "../hooks/useUsuarios"
 
-// importando a função useform do pacote hook-form
+// Importando a função useform do pacote hook-form
 import { useForm } from "react-hook-form"
 
 // Importando o useState para tratar de variáveis
 import { useState } from "react"
 
+// Importação do Navigate para transitar entre as páginas
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
 
@@ -30,11 +32,29 @@ const Login = () => {
   //Váriavel para classes do Alert
   const [alertaClasse, setAlertaClasse] = useState("d-none")
 
+  // Usando apenas a função verificaLogin, que importei do hook
+  const { verificaLogin } = useVerificaLogin()
+
+  // Criando o navigate
+  const navigate = useNavigate()
+
   // Caso o envio de certo
   // data = objeto com todas as informações preenchidas nos campos do formulario
   const onSubmit = (data) => {
     console.log("Dados enviados:", data);
-    
+
+    // Cria uma variável para armazenar a resposta completa que veio da função
+    const resposta = verificaLogin(data)
+
+    // Caso a resposta seja positiva mostra o alerta e leva ele para home
+    if(resposta === "Login efetuado com sucesso"){
+      alert(resposta)
+      navigate("/home")
+    }
+    // Se não, avita o alerta
+    else{
+      setAlertaClasse("my-3 w-75 mx-auto")
+    }
   };
 
   // Caso o envio dê errado
@@ -101,7 +121,7 @@ const Login = () => {
             </Button>
 
             {/* Alerta, caso haja algum erro */}
-            <Alert variant="danger" className={AlertaClasse}>
+            <Alert variant="danger" className={alertaClasse}>
               Usuário ou senha inválidos
             </Alert>
           </Form>
