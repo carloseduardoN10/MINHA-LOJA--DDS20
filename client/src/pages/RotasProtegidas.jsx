@@ -2,7 +2,15 @@ import { Outlet, Navigate } from "react-router-dom"
 
 import Container from "react-bootstrap/Container"
 
+// Importando as informações do contexto de autenticação de usuário
+import { AuthContext } from "../contexts/UserContext.jsx";
+import { useContext } from "react";
+
 const RotasProtegidas = () => {
+
+  const {usuarioNome} = useContext(AuthContext)
+
+
   //Variavel para saber se está logado ou não 
   const estaLogado = true
   // Se não estiver, joga para tela de login

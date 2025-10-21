@@ -17,12 +17,23 @@ import { useVerificaLogin } from "../hooks/useUsuarios"
 import { useForm } from "react-hook-form"
 
 // Importando o useState para tratar de variáveis
-import { useState } from "react"
+import { use, useState } from "react"
 
 // Importação do Navigate para transitar entre as páginas
 import { useNavigate } from "react-router-dom"
 
+// Importando as informações do contexto autenticação de usuário
+ import { AuthContext } from "./contexts/UserContext,jsx"
+ import { useContext } from "react"
+
 const Login = () => {
+  // Usa as variáveis do contexto do usuário
+  const {logout} = useContext(AuthContext)
+
+  // Assim que entrar na página, o localStorage é resetado
+  useEffect( () => {
+    logout()
+  }, [])
 
   // register = cria um objeto com os valores retirados dos inputs
   // handleSubmit = envia o formulário, caso dê erro ou sucesso
@@ -37,6 +48,8 @@ const Login = () => {
 
   // Criando o navigate
   const navigate = useNavigate()
+
+ 
 
   // Caso o envio de certo
   // data = objeto com todas as informações preenchidas nos campos do formulario

@@ -12,10 +12,15 @@ import MyRouter from "./MyRouter.jsx"
 // Importação do bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// importação do contexto de usuário
+import { AuthProvider } from './contexts/UserContext.jsx'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    
+    {/* Fornece as informções de contexto para toda a aplicação */}
+    <AuthProvider>
+      {/* Faz o provedor utilizar as rotas que você definiu n MyRouter */}
     <RouterProvider router={MyRouter}/>
-
+    </AuthProvider>
   </StrictMode>,
 )
