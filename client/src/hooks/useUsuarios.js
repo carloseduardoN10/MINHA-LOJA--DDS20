@@ -4,11 +4,12 @@ const url = "http://localhost:5000";
 //Importando o hook de useState para controlar as variáveis
 import { useState, useEffect, useContext } from "react";
 
-import { AuthContext } from "../contexts/UserContext.jsx";
+// Importar as informações do contexto autenticação de usuário
+import { AuthContext } from '../contexts/UserContext.jsx'
 
 export function useVerificaLogin() {
-  // Usa as variáveis do contexto do usuário
-  const {login} = useState(AuthContext);
+  // Usa as variáveis de contexto do usuário
+  const { login } = useContext(AuthContext)
 
   //Variável para armazenar a lista de usuários
   const [usuarios, setUsuarios] = useState([]);
