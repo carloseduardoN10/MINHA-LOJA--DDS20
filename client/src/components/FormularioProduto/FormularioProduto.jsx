@@ -7,14 +7,17 @@ import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 
 // Importando a função useform do pacote hook-form
-import { useForm } from "react-hook-form";
+import { useForm, Watch } from "react-hook-form";
 
-import {
-  useListaCategorias,
-  useListaMedidas,
-} from "../../hooks/useProdutos.js";
+// Importando o hook de produtos
+import { useListaCategorias, useListaMedidas, useInserirProduto } from "../../hooks/useProdutos";
 
 const FormularioProduto = (props) => {
+
+//IMPORTAÇÂO DAS FUNÇÕES DO HOOK USEPRODUTOS
+//usando a função de inserir produto
+const { inserirProduto } = useInserirProduto();
+
   // register = cria um objeto com os valores retirados dos inputs
   // handleSumbit = envia os dados formulário, caso dê erro ou sucesso
   // formState { errors } = objeto que guarda uma lista de erros que aconteceram na tentativa do envio
@@ -22,7 +25,9 @@ const FormularioProduto = (props) => {
     register,
     handleSubmit,
     formState: { errors },
+    watch
   } = useForm();
+
 
   // Lista de categorias
   const cates = useListaCategorias();
@@ -30,9 +35,36 @@ const FormularioProduto = (props) => {
   // Lista de medidas
   const medis = useListaMedidas();
 
+  // Variavel de produto sem imagem
+  const linkImagem = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA13yHQQqIo0itjIvx5np_T1BJcqtKSwErqQ&s"
+
+  //Variavel para armazenar o link da imagem, vindo do input
+  const imagemAtual = watch("imagemUrl");
+
+  // FUNÇÕES QUE LIDAM COM O SUCESSO OU ERRO DO FORMUÁRIO
+  // Função para caso dê certo na validação do formulário
+  // datat é o objeto com os dados do formulário
+
+  const onSubmit = async (data) => {
+    console.log("Dados:", data)
+    if(props.page === "cadastro"){
+      //Envia o objeto data para o hook inserir produto
+      inserirProduto(data)
+      alert("Produto cadastrado com sucesso!")
+    } 
+    else{
+      // Depois nòis ve
+    }
+  }
+
+  // Caso tenha algum erro no formulário, mostra as mensagens de erro nos campos
+  const onError = (errors) => {
+    console.log("Erros:", errors);
+  }
+
   return (
     <div className="text-center">
-      <Form className="mt-3 w-full" onSubmit={""}>
+      <Form className="mt-3 w-full" onSubmit={handleSubmit( onSubmit, onError )}>
         <Row>
           <Col md={12} lg={6}>
             {/* Caixinha de SKU */}
@@ -103,7 +135,7 @@ const FormularioProduto = (props) => {
 
             {/* Caixinha de categoria */}
             <FloatingLabel
-              controlId="FI-CATEGORIA"
+              controlId="FI-CATEGORIAS"
               label="Categoria"
               className="mb-5"
             >
@@ -112,7 +144,7 @@ const FormularioProduto = (props) => {
                   validate: (value) => value !== "0" || "Escolha uma categoria",
                 })}
               >
-                <option value="0"> Selecione a categoria </option>
+                <option value="0"> Escolha uma categoria </option>
                 {cates.map((cat) => (
                   <option key={cat.id} value={cat.nome}>
                     {" "}
@@ -174,7 +206,6 @@ const FormularioProduto = (props) => {
             </FloatingLabel>
             {/* Fim de caixinha de fornecedor */}
           </Col>
-
           <Col md={12} lg={6}>
             {/* Caixinha de quantidade */}
             <FloatingLabel
@@ -185,8 +216,8 @@ const FormularioProduto = (props) => {
               <Form.Control
                 type="number"
                 {...register("quantidade", {
-                  required: "A quantidade é obrigatório",
-                  minLength: {
+                  required: "A quantidade é obrigatória",
+                  min: {
                     value: 1,
                     message: "A quantidade deve ser maior que 0",
                   },
@@ -198,7 +229,7 @@ const FormularioProduto = (props) => {
             </FloatingLabel>
             {/* Fim de caixinha de quantidade */}
 
-            <Row>              
+            <Row>
               {/* Primeira linha */}
               <Col>
                 {/* Primeira coluna */}
@@ -211,8 +242,8 @@ const FormularioProduto = (props) => {
                   <Form.Control
                     type="number"
                     {...register("tamanho", {
-                      required: "A tamanho é obrigatório",
-                      minLength: {
+                      required: "O tamanho é obrigatório",
+                      min: {
                         value: 1,
                         message: "O tamanho deve ser maior que 0",
                       },
@@ -238,8 +269,8 @@ const FormularioProduto = (props) => {
                         value !== "0" || "Escolha uma medida",
                     })}
                   >
-                    <option value="0"> Selecione uma medida </option>
-                    {cates.map((med) => (
+                    <option value="0"> Escolha uma medida </option>
+                    {medis.map((med) => (
                       <option key={med.id} value={med.nome}>
                         {med.nome}
                       </option>
@@ -252,21 +283,21 @@ const FormularioProduto = (props) => {
                 {/* Fim de caixinha de medidas */}
               </Col>
             </Row>
-            <Row>
+            <Row>           
               {/* Segunda linha */}
-              <Col>
-              {/* Primeira coluna */}
-              {/* Caixinha de preco de custo */}
+              <Col>              
+                {/* Primeira coluna */}
+                {/* Caixinha de preco de custo */}
                 <FloatingLabel
                   controlId="FI-PC"
-                  label="Preço de Custo"
+                  label="Preço de custo"
                   className="mb-5"
                 >
                   <Form.Control
                     type="number"
                     {...register("precoCusto", {
                       required: "O preço de custo é obrigatório",
-                      minLength: {
+                      min: {
                         value: 0.01,
                         message: "O preço de custo deve ser maior que 0",
                       },
@@ -278,59 +309,52 @@ const FormularioProduto = (props) => {
                 </FloatingLabel>
                 {/* Fim de caixinha de preco de custo */}
               </Col>
-              <Col>
-              {/* Segunda coluna */}
-              {/* Caixinha de preco de venda */}
-                <FloatingLabel
-                  controlId="FI-PV"
-                  label="Preço de venda"
-                  className="mb-5"
-                >
+              <Col> {/* Segunda coluna */}
+                {/* Caixinha de preco de venda */}
+                <FloatingLabel controlId="FI-PV" label="Preço de venda" className="mb-5">
                   <Form.Control
                     type="number"
                     {...register("precoVenda", {
                       required: "O preço de venda é obrigatório",
-                      minLength: {
+                      min: {
                         value: 0.01,
                         message: "O preço de venda deve ser maior que 0",
                       },
                     })}
                   ></Form.Control>
-                  {errors.precoVenda && (
-                    <p className="error"> {errors.precoVenda.message} </p>
-                  )}
+                  {errors.precoVenda && (<p className="error"> {errors.precoVenda.message} </p>)}
                 </FloatingLabel>
                 {/* Fim de caixinha de preco de venda */}
               </Col>
             </Row>
-            {/* Caixinha de imagem  */}
+            {/* Caixinha de imagem */}
               <Form.Group controlId="FI-IMAGEM" className="mb-5">
-                <FloatingLabel controlId="FI-IMAGEM-LINK" label="Link da imagem" className="mb-5">
-                  <Form.Control
-                  type="url"
-                  {...register("imagemUrl", {
-                    required: "O link é obrigatório",
-                    pattern: {
-                      value: /^(http|https):\/\/[^"]+$/,
-                      message: "Insira um link válido"
-                    }           
-                  })}>
-                  </Form.Control>
-                  {errors.imagemUrl && (<p className="error"> {errors.imagemUrl.message} </p>) }
-                </FloatingLabel>
-                <image width={200} height={200} rounded src={linkImagem}/>
+                    <FloatingLabel controlId="FI-IMAGEM-LINK" label="Link da imagem" className="mb-5">
+                      <Form.Control
+                        type="url"
+                        { ...register("imagemUrl", {
+                          required: "O link é obrigatório",
+                          pattern: {
+                            value: /^(http|https):\/\/[^ "]+$/,
+                            message: "Insira um link válido"
+                          }
+                        })}>
+                      </Form.Control>
+                      {errors.imagemUrl && (<p className="error"> {errors.imagemUrl.message}</p>)}
+                    </FloatingLabel>
+                    <Image width={200} height={200} rounded src={imagemAtual === "" ? linkImagem : imagemAtual}/>
               </Form.Group>
-            {/* Fim da caixinha de imagem */}
+            {/* Fim de caixinha de imagem */}
           </Col>
         </Row>
         {/* Botão para envio do formulário */}
         <Button variant="primary" size="lg" type="submit">
-          {props.page === "Editar" ? "Atualizar" : "Cadastrar"}
-
+            {props.page === "editar" ? "Atualizar" : "Cadastrar"}
         </Button>
       </Form>
     </div>
   );
 };
+
 
 export default FormularioProduto;

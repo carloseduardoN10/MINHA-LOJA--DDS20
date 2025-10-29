@@ -33,11 +33,30 @@ export function useListaCategorias() {
 
 export function useListaMedidas(){
     // Lista com medida
-    const [medidas] = useState([
-        { 
-            id:1, nome:"mL",
-            id:2, nome:"L"
-        }
-    ])
+    const [medidas] = useState([       
+            {id:1, nome:"mL",},
+            {id:2, nome:"L"},
+    ]);
     return medidas
+}
+
+// CRUD PRODUTOS
+
+// C
+export function useInserirProduto(){
+    // Recebe os dados do produto vindo do formulário, faz uma requisição para a API, para inserção do produto utilizando o método POST 
+    const inserirProduto = async (data) => {
+        const req = await fetch(`${url}/produtos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        }) 
+        const res = await req.json()
+        console.log("Produto inserido:", res);
+
+        // Retorna o produto inserido
+        return res     
+    }
+    
+    return { inserirProduto }
 }
