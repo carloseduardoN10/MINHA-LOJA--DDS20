@@ -1,16 +1,20 @@
-// Importação componentes Bootstrap
-import FloatingLabel from "react-bootstrap/FloatingLabel"
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col"
-import Form from "react-bootstrap/Form"
-import Buttonfrom from "react-bootstrap/Button"
-import  Image  from "react-bootstrap/Image"
+// Importação dos componentes do bootstrap
+import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 
-// Importando o useForm do pacote react-hook-form
-import { useForm } from "react-hook-form"
+// Importando a função useform do pacote hook-form
+import { useForm } from "react-hook-form";
+
+import {
+  useListaCategorias,
+  useListaMedidas,
+} from "../../hooks/useProdutos.js";
 
 const FormularioProduto = (props) => {
-
   // register = cria um objeto com os valores retirados dos inputs
   // handleSumbit = envia os dados formulário, caso dê erro ou sucesso
   // formState { errors } = objeto que guarda uma lista de erros que aconteceram na tentativa do envio
@@ -20,54 +24,313 @@ const FormularioProduto = (props) => {
     formState: { errors },
   } = useForm();
 
+  // Lista de categorias
+  const cates = useListaCategorias();
+
+  // Lista de medidas
+  const medis = useListaMedidas();
 
   return (
     <div className="text-center">
-        <form className="mt-3 w-full" onSubmit={""}>
-            <Row>
-                <Col md={12} lg={6}>
-                {/* Caixinha de SKU */}
-                <FloatingLabel controlId="FI-SKU" label="SKU" className="mb-5">
-                    <Form.Control type="text" {...register("sku", {
-                        required: "O campo SKU é obrigatório",
-                        minLength: {
-                            value: 2,
-                            message: "O SKU deve ter no mínimo 2 caracteres"
-                        },
-                        maxLength: {
-                            value: 10,
-                            message: "O SKU deve ter no máximo 10 caracteres"
-                        }
-                    })}>
-                    </Form.Control>
-                   { errors.sku && <p className="error"> {errors.sku.message} </p> }
+      <Form className="mt-3 w-full" onSubmit={""}>
+        <Row>
+          <Col md={12} lg={6}>
+            {/* Caixinha de SKU */}
+            <FloatingLabel controlId="FI-SKU" label="SKU" className="mb-5">
+              <Form.Control
+                type="text"
+                {...register("sku", {
+                  required: "O SKU é obrigatório",
+                  minLength: {
+                    value: 2,
+                    message: "O SKU deve ter pelo menos dois caracteres",
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: "O SKU deve ter no máximo 10 caracteres",
+                  },
+                })}
+              ></Form.Control>
+              {errors.sku && <p className="error"> {errors.sku.message} </p>}
+            </FloatingLabel>
+            {/* Fim de caixinha de SKU */}
+
+            {/* Caixinha de Nome */}
+            <FloatingLabel controlId="FI-NOME" label="Nome" className="mb-5">
+              <Form.Control
+                type="text"
+                {...register("nome", {
+                  required: "O nome é obrigatório",
+                  minLength: {
+                    value: 2,
+                    message: "O nome deve ter pelo menos dois caracteres",
+                  },
+                  maxLength: {
+                    value: 30,
+                    message: "O nome deve ter no máximo 30 caracteres",
+                  },
+                })}
+              ></Form.Control>
+              {errors.nome && <p className="error"> {errors.nome.message} </p>}
+            </FloatingLabel>
+            {/* Fim de caixinha de Nome */}
+
+            {/* Caixinha de descrição */}
+            <FloatingLabel
+              controlId="FI-DESCRICAO"
+              label="Descrição"
+              className="mb-5"
+            >
+              <Form.Control
+                type="text"
+                {...register("descricao", {
+                  required: "A descrição é obrigatória",
+                  minLength: {
+                    value: 2,
+                    message: "A descrição deve ter pelo menos dois caracteres",
+                  },
+                  maxLength: {
+                    value: 100,
+                    message: "A descrição deve ter no máximo 100 caracteres",
+                  },
+                })}
+              ></Form.Control>
+              {errors.descricao && (
+                <p className="error"> {errors.descricao.message} </p>
+              )}
+            </FloatingLabel>
+            {/* Fim de caixinha de descrição */}
+
+            {/* Caixinha de categoria */}
+            <FloatingLabel
+              controlId="FI-CATEGORIA"
+              label="Categoria"
+              className="mb-5"
+            >
+              <Form.Select
+                {...register("categoria", {
+                  validate: (value) => value !== "0" || "Escolha uma categoria",
+                })}
+              >
+                <option value="0"> Selecione a categoria </option>
+                {cates.map((cat) => (
+                  <option key={cat.id} value={cat.nome}>
+                    {" "}
+                    {cat.nome}{" "}
+                  </option>
+                ))}
+              </Form.Select>
+              {errors.categoria && (
+                <p className="error"> {errors.categoria.message} </p>
+              )}
+            </FloatingLabel>
+            {/* Fim de caixinha de categoria */}
+
+            {/* Caixinha de marca */}
+            <FloatingLabel controlId="FI-MARCA" label="Marca" className="mb-5">
+              <Form.Control
+                type="text"
+                {...register("marca", {
+                  required: "A marca é obrigatória",
+                  minLength: {
+                    value: 2,
+                    message: "A marca deve ter pelo menos dois caracteres",
+                  },
+                  maxLength: {
+                    value: 30,
+                    message: "A marca deve ter no máximo 30 caracteres",
+                  },
+                })}
+              ></Form.Control>
+              {errors.marca && (
+                <p className="error"> {errors.marca.message} </p>
+              )}
+            </FloatingLabel>
+            {/* Fim de caixinha de marca */}
+
+            {/* Caixinha de fornecedor */}
+            <FloatingLabel
+              controlId="FI-FORNECEDOR"
+              label="Fornecedor"
+              className="mb-5"
+            >
+              <Form.Control
+                type="text"
+                {...register("fornecedor", {
+                  required: "O Fornecedor é obrigatório",
+                  minLength: {
+                    value: 2,
+                    message: "O Fornecedor deve ter pelo menos dois caracteres",
+                  },
+                  maxLength: {
+                    value: 30,
+                    message: "O Fornecedor deve ter no máximo 30 caracteres",
+                  },
+                })}
+              ></Form.Control>
+              {errors.fornecedor && (
+                <p className="error"> {errors.fornecedor.message} </p>
+              )}
+            </FloatingLabel>
+            {/* Fim de caixinha de fornecedor */}
+          </Col>
+
+          <Col md={12} lg={6}>
+            {/* Caixinha de quantidade */}
+            <FloatingLabel
+              controlId="FI-QUANTIDADE"
+              label="Quantidade"
+              className="mb-5"
+            >
+              <Form.Control
+                type="number"
+                {...register("quantidade", {
+                  required: "A quantidade é obrigatório",
+                  minLength: {
+                    value: 1,
+                    message: "A quantidade deve ser maior que 0",
+                  },
+                })}
+              ></Form.Control>
+              {errors.quantidade && (
+                <p className="error"> {errors.quantidade.message} </p>
+              )}
+            </FloatingLabel>
+            {/* Fim de caixinha de quantidade */}
+
+            <Row>              
+              {/* Primeira linha */}
+              <Col>
+                {/* Primeira coluna */}
+                {/* Caixinha de tamanho */}
+                <FloatingLabel
+                  controlId="FI-TAMANHO"
+                  label="Tamanho"
+                  className="mb-5"
+                >
+                  <Form.Control
+                    type="number"
+                    {...register("tamanho", {
+                      required: "A tamanho é obrigatório",
+                      minLength: {
+                        value: 1,
+                        message: "O tamanho deve ser maior que 0",
+                      },
+                    })}
+                  ></Form.Control>
+                  {errors.tamanho && (
+                    <p className="error"> {errors.tamanho.message} </p>
+                  )}
                 </FloatingLabel>
-                {/* Fim de caixinha de SKU */}
-             
-                {/* Caixinha de Nome */}
-                <FloatingLabel controlId="FI-NOME" label="Nome" className="mb-5">
-                    <Form.Control type="text" {...register("nome", {
-                        required: "O campo nome é obrigatório",
-                        minLength: {
-                            value: 2,
-                            message: "O nome deve ter no mínimo 2 caracteres"
-                        },
-                        maxLength: {
-                            value: 100,
-                            message: "O nome deve ter no máximo 100 caracteres"
-                        }
-                    })}>
-                    </Form.Control>
-                    { errors.nome && <p className="error"> {errors.nome.message} </p> }
+                {/* Fim de caixinha de tamanho */}
+              </Col>
+              <Col>
+                {/* Segunda coluna */}
+                {/* Caixinha de medidas */}
+                <FloatingLabel
+                  controlId="FI-MEDIDAS"
+                  label="Medida"
+                  className="mb-5"
+                >
+                  <Form.Select
+                    {...register("medida", {
+                      validate: (value) =>
+                        value !== "0" || "Escolha uma medida",
+                    })}
+                  >
+                    <option value="0"> Selecione uma medida </option>
+                    {cates.map((med) => (
+                      <option key={med.id} value={med.nome}>
+                        {med.nome}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  {errors.medida && (
+                    <p className="error"> {errors.medida.message} </p>
+                  )}
                 </FloatingLabel>
-                {/* Fim de caixinha de Nome */}
-                </Col>
+                {/* Fim de caixinha de medidas */}
+              </Col>
             </Row>
+            <Row>
+              {/* Segunda linha */}
+              <Col>
+              {/* Primeira coluna */}
+              {/* Caixinha de preco de custo */}
+                <FloatingLabel
+                  controlId="FI-PC"
+                  label="Preço de Custo"
+                  className="mb-5"
+                >
+                  <Form.Control
+                    type="number"
+                    {...register("precoCusto", {
+                      required: "O preço de custo é obrigatório",
+                      minLength: {
+                        value: 0.01,
+                        message: "O preço de custo deve ser maior que 0",
+                      },
+                    })}
+                  ></Form.Control>
+                  {errors.precoCusto && (
+                    <p className="error"> {errors.precoCusto.message} </p>
+                  )}
+                </FloatingLabel>
+                {/* Fim de caixinha de preco de custo */}
+              </Col>
+              <Col>
+              {/* Segunda coluna */}
+              {/* Caixinha de preco de venda */}
+                <FloatingLabel
+                  controlId="FI-PV"
+                  label="Preço de venda"
+                  className="mb-5"
+                >
+                  <Form.Control
+                    type="number"
+                    {...register("precoVenda", {
+                      required: "O preço de venda é obrigatório",
+                      minLength: {
+                        value: 0.01,
+                        message: "O preço de venda deve ser maior que 0",
+                      },
+                    })}
+                  ></Form.Control>
+                  {errors.precoVenda && (
+                    <p className="error"> {errors.precoVenda.message} </p>
+                  )}
+                </FloatingLabel>
+                {/* Fim de caixinha de preco de venda */}
+              </Col>
+            </Row>
+            {/* Caixinha de imagem  */}
+              <Form.Group controlId="FI-IMAGEM" className="mb-5">
+                <FloatingLabel controlId="FI-IMAGEM-LINK" label="Link da imagem" className="mb-5">
+                  <Form.Control
+                  type="url"
+                  {...register("imagemUrl", {
+                    required: "O link é obrigatório",
+                    pattern: {
+                      value: /^(http|https):\/\/[^"]+$/,
+                      message: "Insira um link válido"
+                    }           
+                  })}>
+                  </Form.Control>
+                  {errors.imagemUrl && (<p className="error"> {errors.imagemUrl.message} </p>) }
+                </FloatingLabel>
+                <image width={200} height={200} rounded src={linkImagem}/>
+              </Form.Group>
+            {/* Fim da caixinha de imagem */}
+          </Col>
+        </Row>
+        {/* Botão para envio do formulário */}
+        <Button variant="primary" size="lg" type="submit">
+          {props.page === "Editar" ? "Atualizar" : "Cadastrar"}
 
-        </form>
-      
+        </Button>
+      </Form>
     </div>
-  )
-}
+  );
+};
 
-export default FormularioProduto
+export default FormularioProduto;
