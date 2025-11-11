@@ -1,6 +1,7 @@
-/* Estilzação das páginas */
+/* Estilização das páginas */
 .App{
     background-color: rgb(231, 231, 231);
+    min-height: 100%;
 }
 
 /* Estilização das mensagens de erro */

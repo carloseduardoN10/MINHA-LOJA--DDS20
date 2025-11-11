@@ -7,16 +7,16 @@ import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 
 // Importando a função useform do pacote hook-form
-import { useForm, Watch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 // Importando o hook de produtos
 import { useListaCategorias, useListaMedidas, useInserirProduto } from "../../hooks/useProdutos";
 
 const FormularioProduto = (props) => {
 
-//IMPORTAÇÂO DAS FUNÇÕES DO HOOK USEPRODUTOS
-//usando a função de inserir produto
-const { inserirProduto } = useInserirProduto();
+  // IMPORTAÇÃO DAS FUNÇÕES VINDAS DO HOOK USEPRODUTOS
+  // Usando a função de inserir produto vinda do hook
+  const { inserirProduto } = useInserirProduto()
 
   // register = cria um objeto com os valores retirados dos inputs
   // handleSumbit = envia os dados formulário, caso dê erro ou sucesso
@@ -28,7 +28,6 @@ const { inserirProduto } = useInserirProduto();
     watch
   } = useForm();
 
-
   // Lista de categorias
   const cates = useListaCategorias();
 
@@ -38,33 +37,30 @@ const { inserirProduto } = useInserirProduto();
   // Variavel de produto sem imagem
   const linkImagem = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA13yHQQqIo0itjIvx5np_T1BJcqtKSwErqQ&s"
 
-  //Variavel para armazenar o link da imagem, vindo do input
-  const imagemAtual = watch("imagemUrl");
+  //Variavel pra armazenar o link da imagem, vindo do input
+  const imagemAtual = watch("imagemUrl")
 
-  // FUNÇÕES QUE LIDAM COM O SUCESSO OU ERRO DO FORMUÁRIO
-  // Função para caso dê certo na validação do formulário
-  // datat é o objeto com os dados do formulário
-
-  const onSubmit = async (data) => {
-    console.log("Dados:", data)
-    if(props.page === "cadastro"){
-      //Envia o objeto data para o hook inserir produto
-      inserirProduto(data)
-      alert("Produto cadastrado com sucesso!")
-    } 
-    else{
-      // Depois nòis ve
-    }
+  // FUNÇÕES QUE LIDAM COM O SUCESSO OU ERRO DO FORMULÁRIO
+  // Função pra caso dê certo na validação do formulário
+  // data é o objeto com as informações dos campos do formulário
+  const onSubmit = (data) => {
+      console.log("Dados:", data)
+      if (props.page === "cadastro") {
+        //Envia o objeto data para o hook inserir produto
+        inserirProduto(data)
+        alert("Produto cadastrado com sucesso")
+      }
+      else {
+        // Depois nóis vê
+      }
   }
-
   // Caso tenha algum erro no formulário, mostra as mensagens de erro nos campos
   const onError = (errors) => {
-    console.log("Erros:", errors);
+      console.log("Erros:" , errors);
   }
-
   return (
     <div className="text-center">
-      <Form className="mt-3 w-full" onSubmit={handleSubmit( onSubmit, onError )}>
+      <Form className="mt-3 w-full" onSubmit={handleSubmit( onSubmit , onError )}>
         <Row>
           <Col md={12} lg={6}>
             {/* Caixinha de SKU */}
@@ -232,6 +228,7 @@ const { inserirProduto } = useInserirProduto();
             <Row>
               {/* Primeira linha */}
               <Col>
+                {" "}
                 {/* Primeira coluna */}
                 {/* Caixinha de tamanho */}
                 <FloatingLabel
@@ -272,7 +269,8 @@ const { inserirProduto } = useInserirProduto();
                     <option value="0"> Escolha uma medida </option>
                     {medis.map((med) => (
                       <option key={med.id} value={med.nome}>
-                        {med.nome}
+                        {" "}
+                        {med.nome}{" "}
                       </option>
                     ))}
                   </Form.Select>
@@ -283,9 +281,11 @@ const { inserirProduto } = useInserirProduto();
                 {/* Fim de caixinha de medidas */}
               </Col>
             </Row>
-            <Row>           
+            <Row>
+              {" "}
               {/* Segunda linha */}
-              <Col>              
+              <Col>
+                {" "}
                 {/* Primeira coluna */}
                 {/* Caixinha de preco de custo */}
                 <FloatingLabel
@@ -342,7 +342,11 @@ const { inserirProduto } = useInserirProduto();
                       </Form.Control>
                       {errors.imagemUrl && (<p className="error"> {errors.imagemUrl.message}</p>)}
                     </FloatingLabel>
-                    <Image width={200} height={200} rounded src={imagemAtual === "" ? linkImagem : imagemAtual}/>
+                    <Image 
+                    width={200} 
+                    height={200} 
+                    rounded 
+                    src={imagemAtual == "" ? linkImagem : imagemAtual}/>
               </Form.Group>
             {/* Fim de caixinha de imagem */}
           </Col>
@@ -355,6 +359,5 @@ const { inserirProduto } = useInserirProduto();
     </div>
   );
 };
-
 
 export default FormularioProduto;
